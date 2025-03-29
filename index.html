@@ -3,883 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiba Inu Yacht Club</title>
+    <title>NoneToken Batch Registration & Node Application Tool</title>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 10px;
-            min-height: 100vh;
-        }
-        #nftCanvas {
-            border: 2px solid #333;
-            background-color: #fff;
-            width: 100%;
-            max-width: 512px;
-            height: auto;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .wallet-info {
-            margin: 10px 0;
-            font-size: 14px;
-            color: #333;
-        }
-        .referral-info {
-            margin: 10px 0;
-            font-size: 14px;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .referral-link {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .copy-btn {
-            padding: 5px 10px;
-            font-size: 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .copy-btn:hover {
-            background-color: #45a049;
-        }
-        .controls {
-            margin: 10px 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            width: 100%;
-            max-width: 600px;
-        }
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 120px;
-        }
-        label {
-            margin-bottom: 3px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .layer-value {
-            margin-bottom: 3px;
-            font-size: 12px;
-            text-align: center;
-            height: 18px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 100%;
-        }
-        .cycle-buttons {
-            display: flex;
-            gap: 5px;
-        }
-        .cycle-btn {
-            padding: 3px 8px;
-            font-size: 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .cycle-btn:hover {
-            background-color: #45a049;
-        }
-        select {
-            margin-top: 5px;
-            padding: 3px;
-            font-size: 12px;
-            width: 100%;
-            border-radius: 5px;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        .action-btn {
-            padding: 8px 16px;
-            font-size: 14px;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #connectWalletBtn {
-            background-color: #FF8A9D;
-        }
-        #connectWalletBtn:hover {
-            background-color: #FF6F85;
-        }
-        #randomizeBtn {
-            background-color: #4CAF50;
-        }
-        #randomizeBtn:hover {
-            background-color: #45a049;
-        }
-        #downloadBtn {
-            background-color: #008CBA;
-        }
-        #downloadBtn:hover {
-            background-color: #007bb5;
-        }
-        #mintBtn {
-            background-color: #FF8A9D;
-        }
-        #mintBtn:hover {
-            background-color: #FF6F85;
-        }
-        .action-btn:disabled {
-            background-color: #A8A2C0;
-            cursor: not-allowed;
-        }
-        .action-btn.loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: #FFF5F7;
-            padding: 20px;
-            border-radius: 20px;
-            text-align: center;
-            color: #5A4A6F;
-            max-width: 320px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            border: 2px solid #FFD1D9;
-        }
-        .modal-content p {
-            margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-        .modal-content button {
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 0.95em;
-            background: #FF8A9D;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        @media (max-width: 600px) {
-            .control-group {
-                width: 100px;
-            }
-            label {
-                font-size: 12px;
-            }
-            .layer-value {
-                font-size: 10px;
-                height: 16px;
-            }
-            .cycle-btn {
-                padding: 2px 6px;
-                font-size: 10px;
-            }
-            select {
-                font-size: 10px;
-                padding: 2px;
-            }
-            .action-btn {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-            .wallet-info, .referral-info {
-                font-size: 12px;
-            }
-            .referral-link {
-                max-width: 150px;
-            }
-            .copy-btn {
-                padding: 3px 8px;
-                font-size: 10px;
-            }
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        textarea { width: 100%; height: 200px; margin-bottom: 10px; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; margin-right: 10px; }
+        button:hover { background-color: #45a049; }
+        #status { margin-top: 10px; white-space: pre-wrap; }
+        .settings { margin: 10px 0; }
+        .settings label { display: block; margin-bottom: 5px; }
+        .settings input { width: 200px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Shiba Inu Yacht Club</h1>
-        <div class="wallet-info">
-            Wallet: <span id="walletAddress">Not connected</span><br>
-            <a href="https://id.presalekiller.com/siyc" target="_blank">Whitepaper</a>
-        </div>
-        <div class="referral-info">
-            Referral Link: <span id="referralLink" class="referral-link">Connect wallet to see your link</span>
-            <button id="copyBtn" class="copy-btn" disabled>Copy</button>
-        </div>
-        <button id="connectWalletBtn" class="action-btn">Connect Wallet</button>
+    <h1>NoneToken Batch Registration & Node Application Tool</h1>
+    <div class="settings">
+        <label>Shibarium RPC URL: <input type="text" id="rpcUrl" value="https://www.shibrpc.com"></label>
+        <label>Chain ID: <input type="text" id="chainId" value="109" readonly></label>
+        <label>Network Name: <input type="text" id="networkName" value="Shibarium" readonly></label>
+        <label>Currency Symbol: <input type="text" id="currencySymbol" value="BONE" readonly></label>
+        <label>Block Explorer: <input type="text" id="blockExplorer" value="https://www.shibariumscan.io" readonly></label>
     </div>
-    <div class="controls">
-        <div class="control-group">
-            <label>Background</label>
-            <div id="backgroundValue" class="layer-value">Aquamarine</div>
-            <div class="cycle-buttons">
-                <button class="cycle-btn" onclick="cycleLayer('Background', -1)">Prev</button>
-                <button class="cycle-btn" onclick="cycleLayer('Background', 1)">Next</button>
-            </div>
-            <select id="backgroundSelect" onchange="selectLayer('Background')">
-                <option value="0">Aquamarine</option>
-                <option value="1">Army-Green</option>
-                <option value="2">Blue</option>
-                <option value="3">Gray</option>
-                <option value="4">New-Punk-Blue</option>
-                <option value="5">Orange</option>
-                <option value="6">Purple</option>
-                <option value="7">Yellow</option>
-            </select>
-        </div>
-        <div class="control-group">
-            <label>Fur</label>
-            <div id="furValue" class="layer-value">Black</div>
-            <div class="cycle-buttons">
-                <button class="cycle-btn" onclick="cycleLayer('Fur', -1)">Prev</button>
-                <button class="cycle-btn" onclick="cycleLayer('Fur', 1)">Next</button>
-            </div>
-            <select id="furSelect" onchange="selectLayer('Fur')">
-                <option value="0">Black</option>
-                <option value="1">Blue</option>
-                <option value="2">Brown</option>
-                <option value="3">Dark-Brown</option>
-                <option value="4">Golden-Brown</option>
-                <option value="5">Gray</option>
-                <option value="6">Orange</option>
-                <option value="7">Pink</option>
-                <option value="8">Red</option>
-                <option value="9">Solid-Gold</option>
-                <option value="10">Tan</option>
-                <option value="11">Zombie</option>
-            </select>
-        </div>
-        <div class="control-group">
-            <label>Clothes</label>
-            <div id="clothesValue" class="layer-value">None</div>
-            <div class="cycle-buttons">
-                <button class="cycle-btn" onclick="cycleLayer('Clothes', -1)">Prev</button>
-                <button class="cycle-btn" onclick="cycleLayer('Clothes', 1)">Next</button>
-            </div>
-            <select id="clothesSelect" onchange="selectLayer('Clothes')">
-                <option value="0">None</option>
-                <option value="1">Admirals-Coat</option>
-                <option value="2">Bandolier</option>
-                <option value="3">Biker-Vest</option>
-                <option value="4">Black-Holes-T</option>
-                <option value="5">Black-Suit</option>
-                <option value="6">Black-T</option>
-                <option value="7">Blue-Dress</option>
-                <option value="8">Bone-Necklace</option>
-                <option value="9">Bone-Tee</option>
-                <option value="10">Caveman-Pelt</option>
-                <option value="11">Cowboy-Shirt</option>
-                <option value="12">Guayabera</option>
-                <option value="13">Hawaiian</option>
-                <option value="14">Hip-Hop</option>
-                <option value="15">Kings-Robe</option>
-                <option value="16">Lab-Coat</option>
-                <option value="17">Leather-Jacket</option>
-                <option value="18">Leather-Punk-Jacket</option>
-                <option value="19">Lumberjack-Shirt</option>
-                <option value="20">Navy-Striped-Tee</option>
-                <option value="21">Pimp-Coat</option>
-                <option value="22">Prison-Jumpsuit</option>
-                <option value="23">Prom-Dress</option>
-                <option value="24">Puffy-Vest</option>
-                <option value="25">Rainbow-Suspenders</option>
-                <option value="26">Sailor-Shirt</option>
-                <option value="27">Service</option>
-                <option value="28">SIYC-T-Red</option>
-                <option value="29">Sleeveless-Logo-T</option>
-                <option value="30">Sleeveless-T</option>
-                <option value="31">Smoking-Jacket</option>
-                <option value="32">Space-Suit</option>
-                <option value="33">Striped-Tee</option>
-                <option value="34">Stunt-Jacket</option>
-                <option value="35">Tanktop</option>
-                <option value="36">Tie-Dye</option>
-                <option value="37">Toga</option>
-                <option value="38">Tuxedo-Tee</option>
-                <option value="39">Tweed-Suit</option>
-                <option value="40">Vietnam-Jacket</option>
-                <option value="41">Wool-Turtleneck</option>
-                <option value="42">Work-Vest</option>
-            </select>
-        </div>
-        <div class="control-group">
-            <label>Eyes</label>
-            <div id="eyesValue" class="layer-value">3D</div>
-            <div class="cycle-buttons">
-                <button class="cycle-btn" onclick="cycleLayer('Eyes', -1)">Prev</button>
-                <button class="cycle-btn" onclick="cycleLayer('Eyes', 1)">Next</button>
-            </div>
-            <select id="eyesSelect" onchange="selectLayer('Eyes')">
-                <option value="0">3D</option>
-                <option value="1">Angry</option>
-                <option value="2">Blindfold</option>
-                <option value="3">Bloodshot</option>
-                <option value="4">Blue-Beams</option>
-                <option value="5">Bored</option>
-                <option value="6">Closed</option>
-                <option value="7">Coins</option>
-                <option value="8">Crazy</option>
-                <option value="9">Cyborg</option>
-                <option value="10">Eyepatch</option>
-                <option value="11">Heart</option>
-                <option value="12">Holographic</option>
-                <option value="13">Hypnotized</option>
-                <option value="14">Laser-Eyes</option>
-                <option value="15">Robot</option>
-                <option value="16">Sad</option>
-                <option value="17">Scumbag</option>
-                <option value="18">Sleepy</option>
-                <option value="19">Sunglasses</option>
-                <option value="20">Wide-Eyed</option>
-                <option value="21">X-Eyes</option>
-                <option value="22">Zombie-Eyes</option>
-            </select>
-        </div>
-        <div class="control-group">
-            <label>Hat</label>
-            <div id="hatValue" class="layer-value">None</div>
-            <div class="cycle-buttons">
-                <button class="cycle-btn" onclick="cycleLayer('Hat', -1)">Prev</button>
-                <button class="cycle-btn" onclick="cycleLayer('Hat', 1)">Next</button>
-            </div>
-            <select id="hatSelect" onchange="selectLayer('Hat')">
-                <option value="0">None</option>
-                <option value="1">Army-Hat</option>
-                <option value="2">Baby's-Bonnet</option>
-                <option value="3">Bandana-Blue</option>
-                <option value="4">Beanie</option>
-                <option value="5">Bowler</option>
-                <option value="6">Bunny-Ears</option>
-                <option value="7">Commie-Hat</option>
-                <option value="8">Cowboy-Hat</option>
-                <option value="9">Faux-Hawk</option>
-                <option value="10">halo-Hair</option>
-                <option value="11">Horns</option>
-                <option value="12">Irish-Boho</option>
-                <option value="13">King's-Crown</option>
-                <option value="14">Laurel-Wreath</option>
-                <option value="15">Party-Hat-1</option>
-                <option value="16">Party-Hat-2</option>
-                <option value="17">Police-Motorcycle-Helmet</option>
-                <option value="18">Prussian-Helmet</option>
-                <option value="19">S&m-Hat</option>
-                <option value="20">Safari</option>
-                <option value="21">Sea-Captain's-Hat</option>
-                <option value="22">Seaman's-Hat</option>
-                <option value="23">Short-Mohawk</option>
-                <option value="24">SIYC-Flipped-Brim</option>
-                <option value="25">SIYC-Hat-Black</option>
-                <option value="26">SIYC-Hat-Red</option>
-                <option value="27">Spinner-Hat</option>
-                <option value="28">Stuntman-Helmet</option>
-                <option value="29">Sushi-Chef-Headband</option>
-                <option value="30">Trippy-Captain's-Hat</option>
-                <option value="31">Vietnam-Era-Helmet</option>
-            </select>
-        </div>
-        <div class="control-group">
-            <label>Mouth</label>
-            <div id="mouthValue" class="layer-value">Bored</div>
-            <div class="cycle-buttons">
-                <button class="cycle-btn" onclick="cycleLayer('Mouth', -1)">Prev</button>
-                <button class="cycle-btn" onclick="cycleLayer('Mouth', 1)">Next</button>
-            </div>
-            <select id="mouthSelect" onchange="selectLayer('Mouth')">
-                <option value="0">Bored</option>
-                <option value="1">Bored-Bubblegum</option>
-                <option value="2">Bored-Cigar</option>
-                <option value="3">Bored-Cigarette</option>
-                <option value="4">Bored-Dagger</option>
-                <option value="5">Bored-Kazoo</option>
-                <option value="6">Bored-Party-Horn</option>
-                <option value="7">Bored-Pipe</option>
-                <option value="8">Bored-Pizza</option>
-                <option value="9">Discomfort</option>
-                <option value="10">Dumbfounded</option>
-                <option value="11">Grin</option>
-                <option value="12">Grin-Diamond-Grill</option>
-                <option value="13">Grin-Gold-Grill</option>
-                <option value="14">Grin-Multicolored</option>
-                <option value="15">Jovial</option>
-                <option value="16">Phoneme-L</option>
-                <option value="17">Phoneme-Oh</option>
-                <option value="18">Phoneme-ooo</option>
-                <option value="19">Phoneme-Vuh</option>
-                <option value="20">Phoneme-Wah</option>
-                <option value="21">Rage</option>
-                <option value="22">Tongue-Out</option>
-            </select>
-        </div>
-        <div class="control-group">
-            <label>Earring</label>
-            <div id="earringValue" class="layer-value">None</div>
-            <div class="cycle-buttons">
-                <button class="cycle-btn" onclick="cycleLayer('Earring', -1)">Prev</button>
-                <button class="cycle-btn" onclick="cycleLayer('Earring', 1)">Next</button>
-            </div>
-            <select id="earringSelect" onchange="selectLayer('Earring')">
-                <option value="0">None</option>
-                <option value="1">Cross</option>
-                <option value="2">Diamond-Stud</option>
-                <option value="3">Gold-Hoop</option>
-                <option value="4">Gold-Stud</option>
-                <option value="5">Silver-Hoop</option>
-                <option value="6">Silver-Stud</option>
-            </select>
-        </div>
+    <p>Enter one private key per line (with "0x" prefix):</p>
+    <textarea id="privateKeys" placeholder="e.g.\n0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef\n0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"></textarea>
+    <div class="settings">
+        <label>Gas Price (Gwei): <input type="number" id="gasPrice" value="3.2" step="0.1" min="0"></label>
+        <label>Gas Limit: <input type="number" id="gasLimit" value="500000" min="21000"></label>
+        <label>Process Interval (seconds): <input type="number" id="processInterval" value="5" min="1"></label>
     </div>
-    <canvas id="nftCanvas" width="512" height="512"></canvas>
-    <div class="action-buttons">
-        <button id="randomizeBtn" class="action-btn" onclick="randomizeNFT()">Randomize</button>
-        <button id="downloadBtn" class="action-btn" onclick="downloadNFT()">Download PNG</button>
-        <button id="mintBtn" class="action-btn" onclick="mintNFT()" disabled>Mint NFT</button>
-    </div>
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <p id="modalMessage"></p>
-            <button onclick="closeModal()">OK</button>
-        </div>
-    </div>
-    <div class="nft-viewer" style="margin-top: 20px; width: 100%; max-width: 600px;">
-        <h2>Your Shiba Inu Yacht Club NFTs</h2>
-        <div id="nftList" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;"></div>
-    </div>
+    <button id="registerButton" onclick="batchRegisterUsers()">Batch Register Users</button>
+    <button id="applyNodeButton" onclick="batchApplyNodes()">Batch Apply for Nodes</button>
+    <button id="checkStatusButton" onclick="checkUserStatus()">Check User Status</button>
+    <div id="status">Status: Ready</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.4/dist/web3.min.js"></script>
     <script>
-        const layers = {
-            Background: ["Aquamarine", "Army-Green", "Blue", "Gray", "New-Punk-Blue", "Orange", "Purple", "Yellow"],
-            Fur: ["Black", "Blue", "Brown", "Dark-Brown", "Golden-Brown", "Gray", "Orange", "Pink", "Red", "Solid-Gold", "Tan", "Zombie"],
-            Clothes: ["None", "Admirals-Coat", "Bandolier", "Biker-Vest", "Black-Holes-T", "Black-Suit", "Black-T", "Blue-Dress", "Bone-Necklace", "Bone-Tee", "Caveman-Pelt", "Cowboy-Shirt", "Guayabera", "Hawaiian", "Hip-Hop", "Kings-Robe", "Lab-Coat", "Leather-Jacket", "Leather-Punk-Jacket", "Lumberjack-Shirt", "Navy-Striped-Tee", "Pimp-Coat", "Prison-Jumpsuit", "Prom-Dress", "Puffy-Vest", "Rainbow-Suspenders", "Sailor-Shirt", "Service", "SIYC-T-Red", "Sleeveless-Logo-T", "Sleeveless-T", "Smoking-Jacket", "Space-Suit", "Striped-Tee", "Stunt-Jacket", "Tanktop", "Tie-Dye", "Toga", "Tuxedo-Tee", "Tweed-Suit", "Vietnam-Jacket", "Wool-Turtleneck", "Work-Vest"],
-            Eyes: ["3D", "Angry", "Blindfold", "Bloodshot", "Blue-Beams", "Bored", "Closed", "Coins", "Crazy", "Cyborg", "Eyepatch", "Heart", "Holographic", "Hypnotized", "Laser-Eyes", "Robot", "Sad", "Scumbag", "Sleepy", "Sunglasses", "Wide-Eyed", "X-Eyes", "Zombie-Eyes"],
-            Hat: ["None", "Army-Hat", "Baby's-Bonnet", "Bandana-Blue", "Beanie", "Bowler", "Bunny-Ears", "Commie-Hat", "Cowboy-Hat", "Faux-Hawk", "halo-Hair", "Horns", "Irish-Boho", "King's-Crown", "Laurel-Wreath", "Party-Hat-1", "Party-Hat-2", "Police-Motorcycle-Helmet", "Prussian-Helmet", "S&m-Hat", "Safari", "Sea-Captain's-Hat", "Seaman's-Hat", "Short-Mohawk", "SIYC-Flipped-Brim", "SIYC-Hat-Black", "SIYC-Hat-Red", "Spinner-Hat", "Stuntman-Helmet", "Sushi-Chef-Headband", "Trippy-Captain's-Hat", "Vietnam-Era-Helmet"],
-            Mouth: ["Bored", "Bored-Bubblegum", "Bored-Cigar", "Bored-Cigarette", "Bored-Dagger", "Bored-Kazoo", "Bored-Party-Horn", "Bored-Pipe", "Bored-Pizza", "Discomfort", "Dumbfounded", "Grin", "Grin-Diamond-Grill", "Grin-Gold-Grill", "Grin-Multicolored", "Jovial", "Phoneme-L", "Phoneme-Oh", "Phoneme-ooo", "Phoneme-Vuh", "Phoneme-Wah", "Rage", "Tongue-Out"],
-            Earring: ["None", "Cross", "Diamond-Stud", "Gold-Hoop", "Gold-Stud", "Silver-Hoop", "Silver-Stud"]
-        };
-
-        const layerOrder = ["Background", "Fur", "Clothes", "Eyes", "Hat", "Mouth", "Earring"];
-        const currentIndices = {
-            Background: 0,
-            Fur: 0,
-            Clothes: 0,
-            Eyes: 0,
-            Hat: 0,
-            Mouth: 0,
-            Earring: 0
-        };
-
-        const canvas = document.getElementById("nftCanvas");
-        const ctx = canvas.getContext("2d");
-
-        let web3, accounts, contract, noneTokenContract;
-        const CONTRACT_ADDRESS = "0x2db53e56Cb121bc622F42154c434a2b28A79af66";
-        const NONE_TOKEN_ADDRESS = "0x64E19b6a167878d2483d166212A3c2c68b1eB842";
+        const NONE_CONTRACT_ADDRESS = "0x64E19b6a167878d2483d166212A3c2c68b1eB842";
         const DEFAULT_REFERRER = "0x9FC924a7c8678C7Bb13114Bd0C74E446937499fA";
-        const BONE_PAYMENT = "10000000000000000000";
-        const BASE_URL = "https://id.presalekiller.com/";
-        let referrerFromUrl = getReferrerFromUrl();
+        const BONE_PAYMENT = BigInt(10 * 10**18); // 10 BONE for registration
+        const NODE_PAYMENT = BigInt(1000 * 10**18); // 1000 BONE for node application
 
-        const CONTRACT_ABI = [
-            {"inputs":[],"stateMutability":"nonpayable","type":"constructor"},
-            {"inputs":[{"internalType":"string","name":"uri","type":"string"},{"internalType":"string[]","name":"attributes","type":"string[]"}],"name":"mintNFT","outputs":[],"stateMutability":"nonpayable","type":"function"},
-            {"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
-            {"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},
-            {"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
-            {"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
-            {"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"}
+        const NONE_CONTRACT_ABI = [
+            {
+                "inputs": [],
+                "name": "initialize",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "becomeNode",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            },
+            {
+                "inputs": [{"internalType": "address", "name": "_referrer", "type": "address"}],
+                "name": "joinWithReferrer",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            },
+            {
+                "inputs": [{"internalType": "address", "name": "user", "type": "address"}],
+                "name": "getUserStatus",
+                "outputs": [
+                    {"internalType": "bool", "name": "joined", "type": "bool"},
+                    {"internalType": "bool", "name": "paidBone", "type": "bool"},
+                    {"internalType": "bool", "name": "nodeStatus", "type": "bool"}
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "nodeCount",
+                "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [{"internalType": "address", "name": "account", "type": "address"}],
+                "name": "balanceOf",
+                "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            }
         ];
 
-        const NONE_TOKEN_ABI = [
-            {"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserStatus","outputs":[{"internalType":"bool","name":"joined","type":"bool"},{"internalType":"bool","name":"paidBone","type":"bool"},{"internalType":"bool","name":"nodeStatus","type":"bool"}],"stateMutability":"view","type":"function"},
-            {"inputs":[{"internalType":"address","name":"_referrer","type":"address"}],"name":"joinWithReferrer","outputs":[],"stateMutability":"payable","type":"function"}
-        ];
+        async function initializeWeb3() {
+            const status = document.getElementById("status");
+            const rpcUrl = document.getElementById("rpcUrl").value.trim();
+            const expectedChainId = 109;
 
-        const shibariumMainnet = {
-            chainId: 109,
-            chainName: 'Shibarium',
-            nativeCurrency: { name: 'BONE', symbol: 'BONE', decimals: 18 },
-            rpcUrls: ['https://www.shibrpc.com'],
-            blockExplorerUrls: ['https://shibariumscan.io']
-        };
-
-        function showModal(message) {
-            document.getElementById('modalMessage').innerHTML = message;
-            document.getElementById('modal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        function getReferrerFromUrl() {
-            const path = window.location.pathname;
-            const addressRegex = /^\/0x[a-fA-F0-9]{40}$/;
-            if (addressRegex.test(path)) {
-                return path.substring(1);
-            }
-            return DEFAULT_REFERRER;
-        }
-
-        async function updateReferralLink() {
-            const referralLinkElement = document.getElementById('referralLink');
-            const copyButton = document.getElementById('copyBtn');
-            if (!accounts || !noneTokenContract) {
-                referralLinkElement.textContent = 'Connect wallet to see your link';
-                copyButton.disabled = true;
-            } else {
-                const userStatus = await noneTokenContract.methods.getUserStatus(accounts[0]).call();
-                const hasJoined = userStatus[0];
-                if (hasJoined) {
-                    const referralLink = `${BASE_URL}${accounts[0]}`;
-                    referralLinkElement.textContent = referralLink;
-                    copyButton.disabled = false;
-                } else {
-                    referralLinkElement.textContent = 'None';
-                    copyButton.disabled = true;
-                }
-            }
-        }
-
-        function copyReferralLink() {
-            const referralLink = document.getElementById('referralLink').textContent;
-            if (referralLink !== 'None' && referralLink !== 'Connect wallet to see your link' && referralLink !== 'Error checking status') {
-                navigator.clipboard.writeText(referralLink).then(() => {
-                    showModal('Referral link copied to clipboard!');
-                }).catch(err => {
-                    showModal('Failed to copy link: ' + err);
-                });
-            }
-        }
-
-        async function connectWallet() {
-            const connectButton = document.getElementById('connectWalletBtn');
-            if (!window.ethereum) {
-                showModal('No wallet detected. Please install <a href="https://metamask.io" target="_blank">MetaMask</a>.');
-                return;
-            }
-            connectButton.classList.add('loading');
-            web3 = new Web3(window.ethereum);
-            accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            if (!accounts.length) {
-                showModal('Please unlock your wallet or connect it.');
-                return;
-            }
-            const chainId = await web3.eth.getChainId();
-            if (chainId !== 109) {
-                try {
-                    await window.ethereum.request({
-                        method: 'wallet_switchEthereumChain',
-                        params: [{ chainId: web3.utils.numberToHex(109) }]
-                    });
-                } catch (switchError) {
-                    if (switchError.code === 4902) {
-                        await window.ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [shibariumMainnet]
-                        });
-                    } else {
-                        showModal('Failed to switch network. Please add Shibarium manually.');
-                        return;
-                    }
-                }
-            }
-            contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
-            noneTokenContract = new web3.eth.Contract(NONE_TOKEN_ABI, NONE_TOKEN_ADDRESS);
-            showModal('Connected to Shibarium successfully!');
-            updateWalletAddress();
-            updateReferralLink();
-            document.getElementById('mintBtn').disabled = false;
-            fetchOwnedNFTs();
-            connectButton.classList.remove('loading');
-        }
-
-        async function updateWalletAddress() {
-            if (!accounts) {
-                document.getElementById('walletAddress').innerText = 'Not connected';
-            } else {
-                const shortAddress = `${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`;
-                document.getElementById('walletAddress').innerText = shortAddress;
-            }
-        }
-
-        function updateLayerValue(layer) {
-            document.getElementById(`${layer.toLowerCase()}Value`).textContent = layers[layer][currentIndices[layer]];
-            document.getElementById(`${layer.toLowerCase()}Select`).value = currentIndices[layer];
-        }
-
-        function checkEarringHatConflict(layer) {
-            if (layer === "Earring" && layers.Earring[currentIndices.Earring] !== "None") {
-                currentIndices.Hat = 0;
-                updateLayerValue("Hat");
-            } else if (layer === "Hat" && layers.Hat[currentIndices.Hat] !== "None") {
-                currentIndices.Earring = 0;
-                updateLayerValue("Earring");
-            }
-        }
-
-        async function drawLayer(layerName, layerValue) {
-            if (layerValue === "None") {
-                return Promise.resolve();
-            }
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.src = `images/${layerName}/${layerValue}.png`;
-                img.onload = () => {
-                    ctx.drawImage(img, 0, 0, 512, 512);
-                    resolve();
-                };
-                img.onerror = () => {
-                    resolve();
-                };
-            });
-        }
-
-        async function updateNFT() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (const layer of layerOrder) {
-                const layerValue = layers[layer][currentIndices[layer]];
-                await drawLayer(layer, layerValue);
-            }
-        }
-
-        function cycleLayer(layer, direction) {
-            currentIndices[layer] = (currentIndices[layer] + direction + layers[layer].length) % layers[layer].length;
-            updateLayerValue(layer);
-            checkEarringHatConflict(layer);
-            updateNFT();
-        }
-
-        function selectLayer(layer) {
-            currentIndices[layer] = parseInt(document.getElementById(`${layer.toLowerCase()}Select`).value);
-            updateLayerValue(layer);
-            checkEarringHatConflict(layer);
-            updateNFT();
-        }
-
-        function randomizeNFT() {
-            for (const layer of layerOrder) {
-                currentIndices[layer] = Math.floor(Math.random() * layers[layer].length);
-            }
-            if (layers.Earring[currentIndices.Earring] !== "None" && layers.Hat[currentIndices.Hat] !== "None") {
-                if (Math.random() < 0.5) {
-                    currentIndices.Hat = 0;
-                } else {
-                    currentIndices.Earring = 0;
-                }
-            }
-            for (const layer of layerOrder) {
-                updateLayerValue(layer);
-            }
-            updateNFT();
-        }
-
-        function downloadNFT() {
-            const link = document.createElement("a");
-            link.download = "nft-custom.png";
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-        }
-
-        async function mintNFT() {
-            if (!web3 || !contract || !accounts || !noneTokenContract) {
-                showModal('Please connect your wallet first!');
-                return;
+            if (!rpcUrl) {
+                status.textContent += "Error: Please provide a valid Shibarium RPC URL.\n";
+                return null;
             }
 
-            const mintButton = document.getElementById('mintBtn');
-            mintButton.classList.add('loading');
-            mintButton.disabled = true;
-
-            // Start 10-second countdown
-            let countdown = 10;
-            showModal(`Minting will start in <span id="countdown">${countdown}</span> seconds...`);
-            const countdownElement = document.getElementById('countdown');
-            
-            const countdownInterval = setInterval(() => {
-                countdown--;
-                countdownElement.textContent = countdown;
-                if (countdown <= 0) {
-                    clearInterval(countdownInterval);
-                    proceedWithMinting();
-                }
-            }, 1000);
-        }
-
-        async function proceedWithMinting() {
-            const mintButton = document.getElementById('mintBtn');
+            const web3 = new Web3(new Web3.providers.HttpProvider(rpcUrl));
             try {
-                const imageData = canvas.toDataURL("image/png").split(',')[1];
-                const attributes = layerOrder.map(layer => layers[layer][currentIndices[layer]]);
-                const totalSupply = await contract.methods.totalSupply().call();
-                const metadata = {
-                    name: `Shiba Inu Yacht Club #${totalSupply}`,
-                    description: "A unique Shiba Inu Yacht Club NFT",
-                    image: `data:image/png;base64,${imageData}`,
-                    attributes: attributes.map((val, i) => ({
-                        trait_type: layerOrder[i],
-                        value: val
-                    }))
-                };
-                const tokenURI = `data:application/json;base64,${btoa(JSON.stringify(metadata))}`;
-                const userStatus = await noneTokenContract.methods.getUserStatus(accounts[0]).call();
-                const hasJoined = userStatus[0];
-                const isNode = userStatus[2];
-
-                if (!hasJoined && !isNode) {
-                    showModal('You need to join first by paying 10 BONE...');
-                    await noneTokenContract.methods.joinWithReferrer(referrerFromUrl).send({
-                        from: accounts[0],
-                        value: BONE_PAYMENT
-                    });
-                    showModal('Successfully joined! Proceeding to mint NFT...');
-                    updateReferralLink();
+                status.textContent += "Testing RPC connection...\n";
+                const networkChainId = await web3.eth.getChainId();
+                status.textContent += "Connected to chain ID: " + networkChainId + " (Shibarium should be 109)\n";
+                if (networkChainId !== expectedChainId) {
+                    status.textContent += "Error: Not connected to Shibarium network (chain ID should be 109).\n";
+                    return null;
                 }
-
-                showModal('Minting NFT...');
-                await contract.methods.mintNFT(tokenURI, attributes).send({ from: accounts[0] });
-                showModal('NFT minted successfully!');
-                fetchOwnedNFTs();
+                return web3;
             } catch (error) {
-                showModal('Minting failed: ' + error.message);
-            } finally {
-                mintButton.classList.remove('loading');
-                mintButton.disabled = false;
+                status.textContent += "Error: Failed to connect to RPC: " + error.message + "\n";
+                return null;
             }
         }
 
-        async function fetchOwnedNFTs() {
-            if (!web3 || !contract || !accounts) {
-                showModal('Please connect your wallet first!');
+        async function batchRegisterUsers() {
+            const status = document.getElementById("status");
+            status.textContent = "Status: Starting...\n";
+
+            const web3 = await initializeWeb3();
+            if (!web3) return;
+
+            const noneContract = new web3.eth.Contract(NONE_CONTRACT_ABI, NONE_CONTRACT_ADDRESS);
+            const privateKeys = document.getElementById("privateKeys").value.trim().split("\n").filter(key => key.length > 0);
+            if (privateKeys.length < 1) {
+                status.textContent += "Error: No private keys provided.\n";
                 return;
             }
-            const nftList = document.getElementById('nftList');
-            nftList.innerHTML = '<p>Loading your NFTs...</p>';
-            const balance = await contract.methods.balanceOf(accounts[0]).call();
-            if (balance == 0) {
-                nftList.innerHTML = '<p>You don’t own any Shiba Inu Yacht Club NFTs yet.</p>';
+
+            const gasPriceGwei = parseFloat(document.getElementById("gasPrice").value);
+            const gasLimit = parseInt(document.getElementById("gasLimit").value);
+            const processInterval = parseInt(document.getElementById("processInterval").value) * 1000;
+
+            if (isNaN(gasPriceGwei) || gasPriceGwei <= 0) {
+                status.textContent += "Error: Invalid Gas Price.\n";
                 return;
             }
-            nftList.innerHTML = '';
-            const totalSupply = await contract.methods.totalSupply().call();
-            for (let i = 0; i < totalSupply; i++) {
-                const owner = await contract.methods.ownerOf(i).call();
-                if (owner.toLowerCase() === accounts[0].toLowerCase()) {
-                    const tokenURI = await contract.methods.tokenURI(i).call();
-                    await displayNFT(i, tokenURI);
+            if (isNaN(gasLimit) || gasLimit < 21000) {
+                status.textContent += "Error: Invalid Gas Limit (minimum 21000).\n";
+                return;
+            }
+            if (isNaN(processInterval) || processInterval < 1000) {
+                status.textContent += "Error: Invalid Process Interval (minimum 1 second).\n";
+                return;
+            }
+
+            const gasPriceWei = web3.utils.toWei(gasPriceGwei.toString(), "gwei");
+
+            try {
+                for (const pk of privateKeys) {
+                    const account = web3.eth.accounts.privateKeyToAccount(pk.trim());
+                    web3.eth.accounts.wallet.add(account);
+                    status.textContent += "Processing wallet " + account.address + "\n";
+
+                    const balance = BigInt(await web3.eth.getBalance(account.address));
+                    const balanceInBONE = web3.utils.fromWei(balance.toString(), "ether");
+                    if (balance < BONE_PAYMENT) {
+                        status.textContent += "Error: Insufficient BONE balance (" + balanceInBONE + " BONE) for registration in " + account.address + "\n";
+                        continue;
+                    }
+
+                    const [joined] = await noneContract.methods.getUserStatus(account.address).call();
+                    if (joined) {
+                        status.textContent += "Wallet " + account.address + " is already registered.\n";
+                        continue;
+                    }
+
+                    status.textContent += "Registering " + account.address + " with referrer " + DEFAULT_REFERRER + "...\n";
+                    try {
+                        const tx = await noneContract.methods.joinWithReferrer(DEFAULT_REFERRER).send({
+                            from: account.address,
+                            value: BONE_PAYMENT.toString(),
+                            gas: gasLimit,
+                            gasPrice: gasPriceWei
+                        });
+                        status.textContent += "Registration successful! Tx: " + tx.transactionHash + "\n";
+                    } catch (error) {
+                        status.textContent += "Error registering " + account.address + ": " + error.message + "\n";
+                    }
+                    await new Promise(resolve => setTimeout(resolve, processInterval));
                 }
+                status.textContent += "All wallets processed. Done!\n";
+            } catch (error) {
+                status.textContent += "Error: " + error.message + "\n";
             }
         }
 
-        async function displayNFT(tokenId, tokenURI) {
-            const nftList = document.getElementById('nftList');
-            let metadata;
-            if (tokenURI.startsWith('data:application/json;base64,')) {
-                const base64Data = tokenURI.split(',')[1];
-                metadata = JSON.parse(atob(base64Data));
-            } else {
-                metadata = { name: `Token #${tokenId}`, image: 'Unknown' };
-            }
-            const nftDiv = document.createElement('div');
-            nftDiv.style.textAlign = 'center';
-            nftDiv.style.width = '150px';
-            nftDiv.innerHTML = `
-                <img src="${metadata.image}" alt="${metadata.name}" style="width: 100%; border-radius: 10px;">
-                <p style="font-size: 14px; margin: 5px 0;">${metadata.name} (ID: ${tokenId})</p>
-                <input type="text" id="transferAddress${tokenId}" placeholder="Recipient Address" style="width: 100%; padding: 5px; margin-bottom: 5px; border-radius: 5px;">
-                <button class="action-btn" onclick="transferNFT(${tokenId})" style="background-color: #FF8A9D;">Transfer</button>
-            `;
-            nftList.appendChild(nftDiv);
-        }
+        async function batchApplyNodes() {
+            const status = document.getElementById("status");
+            status.textContent = "Status: Starting...\n";
 
-        async function transferNFT(tokenId) {
-            if (!web3 || !contract || !accounts) {
-                showModal('Please connect your wallet first!');
+            const web3 = await initializeWeb3();
+            if (!web3) return;
+
+            const noneContract = new web3.eth.Contract(NONE_CONTRACT_ABI, NONE_CONTRACT_ADDRESS);
+            const privateKeys = document.getElementById("privateKeys").value.trim().split("\n").filter(key => key.length > 0);
+            if (privateKeys.length < 1) {
+                status.textContent += "Error: No private keys provided.\n";
                 return;
             }
-            const transferAddress = document.getElementById(`transferAddress${tokenId}`).value;
-            if (!web3.utils.isAddress(transferAddress)) {
-                showModal('Invalid Ethereum address!');
+
+            const gasPriceGwei = parseFloat(document.getElementById("gasPrice").value);
+            const gasLimit = parseInt(document.getElementById("gasLimit").value);
+            const processInterval = parseInt(document.getElementById("processInterval").value) * 1000;
+
+            if (isNaN(gasPriceGwei) || gasPriceGwei <= 0) {
+                status.textContent += "Error: Invalid Gas Price.\n";
                 return;
             }
-            showModal('Transferring NFT...');
-            await contract.methods.safeTransferFrom(accounts[0], transferAddress, tokenId).send({ from: accounts[0] });
-            showModal('NFT transferred successfully!');
-            fetchOwnedNFTs();
+            if (isNaN(gasLimit) || gasLimit < 21000) {
+                status.textContent += "Error: Invalid Gas Limit (minimum 21000).\n";
+                return;
+            }
+            if (isNaN(processInterval) || processInterval < 1000) {
+                status.textContent += "Error: Invalid Process Interval (minimum 1 second).\n";
+                return;
+            }
+
+            const gasPriceWei = web3.utils.toWei(gasPriceGwei.toString(), "gwei");
+
+            try {
+                const maxNodes = 2100;
+                const currentNodeCount = await noneContract.methods.nodeCount().call();
+                if (currentNodeCount >= maxNodes) {
+                    status.textContent += "Error: Maximum node limit (2100) reached.\n";
+                    return;
+                }
+
+                for (const pk of privateKeys) {
+                    const account = web3.eth.accounts.privateKeyToAccount(pk.trim());
+                    web3.eth.accounts.wallet.add(account);
+                    status.textContent += "Processing wallet " + account.address + "\n";
+
+                    const balance = BigInt(await web3.eth.getBalance(account.address));
+                    const balanceInBONE = web3.utils.fromWei(balance.toString(), "ether");
+                    if (balance < NODE_PAYMENT) {
+                        status.textContent += "Error: Insufficient BONE balance (" + balanceInBONE + " BONE) for node application in " + account.address + "\n";
+                        continue;
+                    }
+
+                    const [joined, , isNode] = await noneContract.methods.getUserStatus(account.address).call();
+                    if (!joined) {
+                        status.textContent += "Error: Wallet " + account.address + " is not registered. Please register first.\n";
+                        continue;
+                    }
+                    if (isNode) {
+                        status.textContent += "Wallet " + account.address + " is already a node.\n";
+                        continue;
+                    }
+
+                    status.textContent += "Applying for node with " + account.address + "...\n";
+                    try {
+                        const tx = await noneContract.methods.becomeNode().send({
+                            from: account.address,
+                            value: NODE_PAYMENT.toString(),
+                            gas: gasLimit,
+                            gasPrice: gasPriceWei
+                        });
+                        status.textContent += "Node application successful! Tx: " + tx.transactionHash + "\n";
+                    } catch (error) {
+                        status.textContent += "Error applying node for " + account.address + ": " + error.message + "\n";
+                    }
+                    await new Promise(resolve => setTimeout(resolve, processInterval));
+                }
+                status.textContent += "All wallets processed. Done!\n";
+            } catch (error) {
+                status.textContent += "Error: " + error.message + "\n";
+            }
         }
 
-        window.onload = () => {
-            for (const layer of layerOrder) {
-                updateLayerValue(layer);
-            }
-            updateNFT();
-            updateReferralLink();
-            if (!window.location.protocol.startsWith('http')) {
-                showModal('Please run this page via a local server (e.g., "npx serve") to connect MetaMask.');
-            } else if (!window.ethereum) {
-                showModal('No wallet detected. Please install <a href="https://metamask.io" target="_blank">MetaMask</a>.');
-            }
-        };
+        async function checkUserStatus() {
+            const status = document.getElementById("status");
+            status.textContent = "Status: Starting...\n";
 
-        window.ethereum?.on('chainChanged', (chainId) => {
-            if (parseInt(chainId, 16) !== 109) {
-                showModal('Switched to wrong network. Please reconnect to Shibarium.');
-                web3 = null;
-                contract = null;
-                accounts = null;
-                updateWalletAddress();
-                updateReferralLink();
-                document.getElementById('mintBtn').disabled = true;
-            } else {
-                connectWallet();
-            }
-        });
+            const web3 = await initializeWeb3();
+            if (!web3) return;
 
-        window.ethereum?.on('accountsChanged', (newAccounts) => {
-            if (newAccounts.length) {
-                connectWallet();
-            } else {
-                showModal('Wallet disconnected. Please reconnect.');
-                web3 = null;
-                contract = null;
-                accounts = null;
-                updateWalletAddress();
-                updateReferralLink();
-                document.getElementById('mintBtn').disabled = true;
+            const noneContract = new web3.eth.Contract(NONE_CONTRACT_ABI, NONE_CONTRACT_ADDRESS);
+            const privateKeys = document.getElementById("privateKeys").value.trim().split("\n").filter(key => key.length > 0);
+            if (privateKeys.length < 1) {
+                status.textContent += "Error: No private keys provided.\n";
+                return;
             }
-        });
 
-        document.getElementById('connectWalletBtn').addEventListener('click', connectWallet);
-        document.getElementById('copyBtn').addEventListener('click', copyReferralLink);
+            try {
+                for (const pk of privateKeys) {
+                    const account = web3.eth.accounts.privateKeyToAccount(pk.trim());
+                    const [joined, paidBone, isNode] = await noneContract.methods.getUserStatus(account.address).call();
+                    status.textContent += "Wallet " + account.address + ":\n";
+                    status.textContent += "  Joined: " + joined + "\n";
+                    status.textContent += "  Paid BONE: " + paidBone + "\n";
+                    status.textContent += "  Is Node: " + isNode + "\n";
+                }
+                status.textContent += "All wallets processed. Done!\n";
+            } catch (error) {
+                status.textContent += "Error: " + error.message + "\n";
+            }
+        }
     </script>
 </body>
 </html>
