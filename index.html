@@ -40,56 +40,16 @@
     <script>
         const NONE_CONTRACT_ADDRESS = "0x64E19b6a167878d2483d166212A3c2c68b1eB842";
         const DEFAULT_REFERRER = "0x9FC924a7c8678C7Bb13114Bd0C74E446937499fA";
-        const BONE_PAYMENT = BigInt(10 * 10**18); // 10 BONE for registration
-        const NODE_PAYMENT = BigInt(1000 * 10**18); // 1000 BONE for node application
+        const BONE_PAYMENT = BigInt(10 * 10**18);
+        const NODE_PAYMENT = BigInt(1000 * 10**18);
 
         const NONE_CONTRACT_ABI = [
-            {
-                "inputs": [],
-                "name": "initialize",
-                "outputs": [],
-                "stateMutability": "payable",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "becomeNode",
-                "outputs": [],
-                "stateMutability": "payable",
-                "type": "function"
-            },
-            {
-                "inputs": [{"internalType": "address", "name": "_referrer", "type": "address"}],
-                "name": "joinWithReferrer",
-                "outputs": [],
-                "stateMutability": "payable",
-                "type": "function"
-            },
-            {
-                "inputs": [{"internalType": "address", "name": "user", "type": "address"}],
-                "name": "getUserStatus",
-                "outputs": [
-                    {"internalType": "bool", "name": "joined", "type": "bool"},
-                    {"internalType": "bool", "name": "paidBone", "type": "bool"},
-                    {"internalType": "bool", "name": "nodeStatus", "type": "bool"}
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "nodeCount",
-                "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [{"internalType": "address", "name": "account", "type": "address"}],
-                "name": "balanceOf",
-                "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
-                "stateMutability": "view",
-                "type": "function"
-            }
+            {"inputs":[],"name":"initialize","outputs":[],"stateMutability":"payable","type":"function"},
+            {"inputs":[],"name":"becomeNode","outputs":[],"stateMutability":"payable","type":"function"},
+            {"inputs":[{"internalType":"address","name":"_referrer","type":"address"}],"name":"joinWithReferrer","outputs":[],"stateMutability":"payable","type":"function"},
+            {"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserStatus","outputs":[{"internalType":"bool","name":"joined","type":"bool"},{"internalType":"bool","name":"paidBone","type":"bool"},{"internalType":"bool","name":"nodeStatus","type":"bool"}],"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"nodeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}
         ];
 
         async function initializeWeb3() {
@@ -164,7 +124,15 @@
                         continue;
                     }
 
-                    const [joined] = await noneContract.methods.getUserStatus(account.address).call();
+                    let userStatus;
+                    try {
+                        userStatus = await noneContract.methods.getUserStatus(account.address).call();
+                    } catch (error) {
+                        status.textContent += "Error calling getUserStatus for " + account.address + ": " + error.message + "\n";
+                        continue;
+                    }
+
+                    const joined = userStatus.joined !== undefined ? userStatus.joined : userStatus[0];
                     if (joined) {
                         status.textContent += "Wallet " + account.address + " is already registered.\n";
                         continue;
@@ -243,7 +211,16 @@
                         continue;
                     }
 
-                    const [joined, , isNode] = await noneContract.methods.getUserStatus(account.address).call();
+                    let userStatus;
+                    try {
+                        userStatus = await noneContract.methods.getUserStatus(account.address).call();
+                    } catch (error) {
+                        status.textContent += "Error calling getUserStatus for " + account.address + ": " + error.message + "\n";
+                        continue;
+                    }
+
+                    const joined = userStatus.joined !== undefined ? userStatus.joined : userStatus[0];
+                    const isNode = userStatus.nodeStatus !== undefined ? userStatus.nodeStatus : userStatus[2];
                     if (!joined) {
                         status.textContent += "Error: Wallet " + account.address + " is not registered. Please register first.\n";
                         continue;
@@ -290,7 +267,18 @@
             try {
                 for (const pk of privateKeys) {
                     const account = web3.eth.accounts.privateKeyToAccount(pk.trim());
-                    const [joined, paidBone, isNode] = await noneContract.methods.getUserStatus(account.address).call();
+                    let userStatus;
+                    try {
+                        userStatus = await noneContract.methods.getUserStatus(account.address).call();
+                    } catch (error) {
+                        status.textContent += "Error calling getUserStatus for " + account.address + ": " + error.message + "\n";
+                        continue;
+                    }
+
+                    const joined = userStatus.joined !== undefined ? userStatus.joined : userStatus[0];
+                    const paidBone = userStatus.paidBone !== undefined ? userStatus.paidBone : userStatus[1];
+                    const isNode = userStatus.nodeStatus !== undefined ? userStatus.nodeStatus : userStatus[2];
+
                     status.textContent += "Wallet " + account.address + ":\n";
                     status.textContent += "  Joined: " + joined + "\n";
                     status.textContent += "  Paid BONE: " + paidBone + "\n";
